@@ -1,0 +1,6 @@
+framework module stickynote {
+  umbrella header "stickynote-umbrella.h"
+
+  export *
+  module * { export * }
+}
