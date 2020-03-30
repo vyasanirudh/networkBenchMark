@@ -15,7 +15,7 @@
 import UIKit
 import stickynote
 
-let hostAddress = "localhost"
+let hostAddress = "35.232.179.243"
 let useSSL = false
 
 class StickyNotesViewController: UIViewController, UITextFieldDelegate {
@@ -58,7 +58,6 @@ class StickyNotesViewController: UIViewController, UITextFieldDelegate {
             imageView.backgroundColor = UIColor.red
             imageView.image = nil;
         } else if let response = response {
-            let count = response.image.count
             imageView.image = UIImage(data: response.image);
         }
     }
@@ -68,23 +67,13 @@ class StickyNotesViewController: UIViewController, UITextFieldDelegate {
             let request = StickyNoteRequest()
             request.message = message
             request.size = size
-            var timeAtPress = Date()
+            let timeAtPress = Date()
             let call = client.rpcToGet(with: request, handler: { (response, error) in
                 let elapsed = Date().timeIntervalSince(timeAtPress)
-//                print(elapsed)
-//                self.handleStickynoteResponse(response, error: error)
+                print(elapsed)
+                self.handleStickynoteResponse(response, error: error)
             })
             call.start()
-            
-            let helloRequest = SayHelloRequest()
-            helloRequest.message = message
-            timeAtPress = Date()
-            let callHello = client.rpcToSayHello(with: helloRequest, handler: { (response, error) in
-                let elapsed = Date().timeIntervalSince(timeAtPress)
-                print(elapsed)
-//                self.handleStickynoteResponse(response, error: error)
-            })
-            callHello.start()
         }
     }
     

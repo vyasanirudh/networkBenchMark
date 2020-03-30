@@ -1,12 +1,53 @@
 #!/bin/sh
 
-echo "Installing Cocoapod dependencies"
-pod install
+echo "1. Initiating tests"
 
-echo "Opening the project workspace in Xcode"
-open stickynotes.xcworkspace
+action="test"; target=""; 
 
-echo "Now press the run button!"
-echo "Be sure that your server is running."
+for last; do true; done
+count=${last:-1}
 
+regex='^[0-9]+$' #check if last argument is a number, if not set it to 1.
+if ! [[ $count =~ $regex ]] ; then
+   count=1
+fi
 
+echo "count $count"
+
+while (( "$#" )); do
+   case "$1" in
+      --rest)  
+			target="RESTTests/RESTTests"
+            ;;
+      --grpc)     
+			target="gRPCTests/gRPCTests"
+            ;;
+      --socket) 
+			echo "ERROR: Not yet setup"
+            ;;
+      --without-building) 
+            action="test-without-building" 
+            ;;               
+      *) 
+   esac        
+   shift
+done
+
+echo "Initiating: $action with target $target"
+
+for i in {1..count}; \
+	do
+	if [ "$target" = "" ]; then
+  		xcodebuild "$action" \
+		-scheme stickynotes \
+		-workspace stickynotes.xcworkspace \
+		-destination 'platform=iOS Simulator,name=iPhone 8,OS=13.3'
+  	else
+  		xcodebuild "$action" \
+		-scheme stickynotes \
+		-workspace stickynotes.xcworkspace \
+		-destination 'platform=iOS Simulator,name=iPhone 8,OS=13.3' \
+		-only-testing "$target"
+	fi
+ 	
+done

@@ -6,6 +6,16 @@ use_frameworks!
 target 'stickynotes' do
 
 pod 'stickynote', :path => 'stickyapi'
-pod 'SwiftProtobuf', '~> 1.0'
+
+target 'gRPCTests' do
+   inherit! :search_paths
+   # Pods for testing
+ end
+
+target 'RESTTests' do
+  inherit! :search_paths
+  # Pods for testing
+end
+
 end
 

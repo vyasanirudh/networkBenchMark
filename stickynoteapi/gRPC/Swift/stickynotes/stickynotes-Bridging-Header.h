@@ -16,11 +16,11 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
-//#import <GRPCClient/GRPCCall.h>
-//#import <GRPCClient/GRPCCall+Tests.h> // this allows us to disable TLS
-//#import <RxLibrary/GRXBufferedPipe.h>
-//
-//#import <ProtoRPC/ProtoRPC.h>
-//
-//#import "stickynote/Stickynote.pbobjc.h"
-//#import "stickynote/Stickynote.pbrpc.h"
+#import <GRPCClient/GRPCCall.h>
+#import <GRPCClient/GRPCCall+Tests.h> // this allows us to disable TLS
+#import <RxLibrary/GRXBufferedPipe.h>
+
+#import <ProtoRPC/ProtoRPC.h>
+
+#import "stickynote/Stickynote.pbobjc.h"
+#import "stickynote/Stickynote.pbrpc.h"

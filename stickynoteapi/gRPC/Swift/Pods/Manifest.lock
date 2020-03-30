@@ -148,11 +148,9 @@ PODS:
     - "!ProtoCompiler-gRPCPlugin (~> 1.0)"
     - gRPC-ProtoRPC
     - stickynote/Messages
-  - SwiftProtobuf (1.8.0)
 
 DEPENDENCIES:
   - stickynote (from `stickyapi`)
-  - SwiftProtobuf (~> 1.0)
 
 SPEC REPOS:
   trunk:
@@ -165,7 +163,6 @@ SPEC REPOS:
     - gRPC-ProtoRPC
     - gRPC-RxLibrary
     - Protobuf
-    - SwiftProtobuf
 
 EXTERNAL SOURCES:
   stickynote:
@@ -182,8 +179,7 @@ SPEC CHECKSUMS:
   gRPC-RxLibrary: 46eef33e55e9cf6b7a21cb60dd034175a38ece40
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
   stickynote: ef4c4c2af65980e73a686dae9766bb7f1441273c
-  SwiftProtobuf: 2cbd9409689b7df170d82a92a33443c8e3e14a70
 
-PODFILE CHECKSUM: 60f336d826f5b75e2949bef66b9b822cb91c1e40
+PODFILE CHECKSUM: fddfd22c7f1ebc8dc64353f556d2382333d21c3c
 
 COCOAPODS: 1.9.0
