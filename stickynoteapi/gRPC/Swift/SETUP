@@ -2,6 +2,8 @@
 
 echo "1. Initiating tests"
 
+#check if xcpretty is installed.
+
 action="test"; target=""; 
 
 for last; do true; done
@@ -35,19 +37,18 @@ done
 
 echo "Initiating: $action with target $target"
 
-for i in {1..count}; \
-	do
-	if [ "$target" = "" ]; then
+for run in {1..count}; \
+	do if [ "$target" = "" ]; then
   		xcodebuild "$action" \
 		-scheme stickynotes \
 		-workspace stickynotes.xcworkspace \
-		-destination 'platform=iOS Simulator,name=iPhone 8,OS=13.3'
+		-destination 'platform=iOS Simulator,name=iPhone 8' | xcpretty -r junit # OS=13.3' TODO: add the device's OS picking logic.
   	else
   		xcodebuild "$action" \
 		-scheme stickynotes \
 		-workspace stickynotes.xcworkspace \
-		-destination 'platform=iOS Simulator,name=iPhone 8,OS=13.3' \
-		-only-testing "$target"
+		-destination 'platform=iOS Simulator,name=iPhone 8' \
+		-only-testing "$target" | xcpretty -r junit
 	fi
- 	
+ 	shift
 done
