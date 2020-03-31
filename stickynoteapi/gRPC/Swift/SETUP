@@ -37,18 +37,19 @@ done
 
 echo "Initiating: $action with target $target"
 
-for run in {1..count}; \
-	do if [ "$target" = "" ]; then
+perform_tests() {
+	if [ "$target" = "" ]; then
   		xcodebuild "$action" \
-		-scheme stickynotes \
-		-workspace stickynotes.xcworkspace \
-		-destination 'platform=iOS Simulator,name=iPhone 8' | xcpretty -r junit # OS=13.3' TODO: add the device's OS picking logic.
+  		-scheme stickynotes \
+  		-workspace stickynotes.xcworkspace \
+  		-destination 'platform=iOS Simulator,name=iPhone 8' | xcpretty -r junit --report html # OS=13.3' TODO: add the device's OS picking logic.
   	else
   		xcodebuild "$action" \
-		-scheme stickynotes \
-		-workspace stickynotes.xcworkspace \
-		-destination 'platform=iOS Simulator,name=iPhone 8' \
-		-only-testing "$target" | xcpretty -r junit
+  		-scheme stickynotes \
+  		-workspace stickynotes.xcworkspace \
+  		-destination 'platform=iOS Simulator,name=iPhone 8' \
+  		-only-testing "$target" | xcpretty -r junit --report html
 	fi
- 	shift
-done
+}
+
+for ((i=0; i<count; i++)); do perform_tests; done #execute the tests 'count' nuber of times. used C style loop as 'for i in {1..$count}' does not work!

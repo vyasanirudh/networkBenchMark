@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <testsuites name='RESTTests.xctest' tests='2' failures='0'>
   <testsuite name='RESTTests.RESTTests' tests='2' failures='0'>
-    <testcase classname='RESTTests.RESTTests' name='testgRPCServiceForHelloMessageToMeasureTime' time='0.326'/>
-    <testcase classname='RESTTests.RESTTests' name='testgRPCServiceForImageDownloadToMeasureTime' time='0.366'/>
+    <testcase classname='RESTTests.RESTTests' name='testRESTServiceForHelloMessageToMeasureTime' time='0.296'/>
+    <testcase classname='RESTTests.RESTTests' name='testRESTServiceForImageDownloadToMeasureTime' time='0.375'/>
   </testsuite>
 </testsuites>

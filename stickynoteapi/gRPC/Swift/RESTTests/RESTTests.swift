@@ -12,7 +12,7 @@ let hostAddress = "localhost" //Update this based on the GCP IP.
 
 class RESTTests: XCTestCase {
 
-    func testgRPCServiceForImageDownloadToMeasureTime () {
+    func testRESTServiceForImageDownloadToMeasureTime () {
         measure {
             let expectation = XCTestExpectation(description: "Download Image")
             self.triggerRequest(with: hostAddress, endPoint: "stickynote") { (data) in
@@ -23,7 +23,7 @@ class RESTTests: XCTestCase {
         }
     }
 
-    func testgRPCServiceForHelloMessageToMeasureTime () {
+    func testRESTServiceForHelloMessageToMeasureTime () {
         measure {
             let expectation = XCTestExpectation(description: "Download Hello Message")
             self.triggerRequest(with: hostAddress, endPoint: "sayHello") { (data) in
