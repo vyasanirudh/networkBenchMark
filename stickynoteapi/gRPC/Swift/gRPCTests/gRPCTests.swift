@@ -9,7 +9,7 @@
 import XCTest
 import stickynote
 
-let hostAddress = "34.66.31.141" //Update this based on the GCP IP.
+let hostAddress = "localhost" //Update this based on the GCP IP.
 
 class gRPCTests: XCTestCase {
 

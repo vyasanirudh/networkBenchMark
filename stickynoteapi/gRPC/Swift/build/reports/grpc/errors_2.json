@@ -24,20 +24,8 @@
 
   ],
   "tests_failures": {
-    "gRPCTests.gRPCTests": [
-      {
-        "file_path": "/Users/anirudh.vyas/Documents/Repos/NetworkCommunicationComparisonStudy/AnirudhGitNBS/networkBenchMark/stickynoteapi/gRPC/Swift/gRPCTests/gRPCTests.swift:49",
-        "reason": "XCTAssertNotNil failed - No message downloaded!",
-        "test_case": "testgRPCServiceForHelloMessageToMeasureTime"
-      },
-      {
-        "file_path": "/Users/anirudh.vyas/Documents/Repos/NetworkCommunicationComparisonStudy/AnirudhGitNBS/networkBenchMark/stickynoteapi/gRPC/Swift/gRPCTests/gRPCTests.swift:33",
-        "reason": "XCTAssertNotNil failed - No image downloaded!",
-        "test_case": "testgRPCServiceForImageDownloadToMeasureTime"
-      }
-    ]
   },
   "tests_summary_messages": [
-    "\t Executed 2 tests, with 2 failures (0 unexpected) in 0.528 (0.529) seconds\n"
+    "\t Executed 2 tests, with 0 failures (0 unexpected) in 0.686 (0.688) seconds\n"
   ]
 }

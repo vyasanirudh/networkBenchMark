@@ -33,6 +33,10 @@ class RESTTests: XCTestCase {
             wait(for: [expectation], timeout: 2.0)
         }
     }
+    
+    func testAll () {
+        print("9.99999")
+    }
 }
 
 extension RESTTests {
