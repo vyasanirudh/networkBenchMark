@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='gRPCTests.xctest' tests='2' failures='0'>
+  <testsuite name='gRPCTests.gRPCTests' tests='2' failures='0'>
+    <testcase classname='gRPCTests.gRPCTests' name='testgRPCServiceForHelloMessageToMeasureTime' time='0.314'/>
+    <testcase classname='gRPCTests.gRPCTests' name='testgRPCServiceForImageDownloadToMeasureTime' time='0.390'/>
+  </testsuite>
+</testsuites>

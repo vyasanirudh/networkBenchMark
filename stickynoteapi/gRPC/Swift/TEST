@@ -16,7 +16,7 @@ NC="\033[0m"       # Text Reset
 echo "${RED} REMOVING PREVIOUS TEST RECORDS! ${NC}" # make this conditional.
 rm -rf build/reports
 
-# TODO: npm install xml2js check for this too.  npm install glob check for this too.
+# TODO: npm install xml2js check for this too.  npm install glob check for this too. install jq using brew install jq.
 
 #check if xcpretty is installed, xchtmlreport and xcpretty-json-formatter is installed.
 echo "${MAGENTA} Checking if 'xcpretty' gem is installed or nor, found the gem? ${NC}"
@@ -100,14 +100,16 @@ for ((i=1; i<=count; i++));  #used C style loop as 'for i in {1..$count}' does n
     fi
 done
 
-#collate all data. The process of collating works in a simple way, convert XML to JSON and then to CSV. :)
+#collate all data. The process of collating works in a simple way, convert XML to JSON and collate into one, and then to CSV. :)
 
+echo "${CYAN} **** GENERATING COMBINED FINAL TEST REPORT **** ${NC}"
 
+node ./node/generateJsonReport.js
 
+# This step ensures that a csv is generated after the json is ready.
+jq -r '.testsuites | .testsuite[] | .testcase[] | ."$" | [.classname, .name, .time] | @csv' "./build/reports/combinedReport.json" > "./build/reports/combinedReport.csv"
 
+# Add the heading to column name
+echo 'Target,Test,Time' | cat - "./build/reports/combinedReport.csv" > temp && mv temp "./build/reports/combinedReport.csv"
 
-
-
-
-
-
+echo "${CYAN} **** A COMBINED FINAL TEST REPORT GENERATED SUCCESSFULLY **** ${NC}"

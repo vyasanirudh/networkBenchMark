@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <testsuites name='gRPCTests.xctest' tests='2' failures='0'>
   <testsuite name='gRPCTests.gRPCTests' tests='2' failures='0'>
-    <testcase classname='gRPCTests.gRPCTests' name='testgRPCServiceForHelloMessageToMeasureTime' time='0.296'/>
-    <testcase classname='gRPCTests.gRPCTests' name='testgRPCServiceForImageDownloadToMeasureTime' time='0.390'/>
+    <testcase classname='gRPCTests.gRPCTests' name='testgRPCServiceForHelloMessageToMeasureTime' time='0.329'/>
+    <testcase classname='gRPCTests.gRPCTests' name='testgRPCServiceForImageDownloadToMeasureTime' time='0.383'/>
   </testsuite>
 </testsuites>
