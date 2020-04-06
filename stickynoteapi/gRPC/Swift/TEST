@@ -80,19 +80,20 @@ echo "${CYAN} **** Initiating: $action with target $target **** ${NC}"
 perform_tests() {
 	if [ "$target" = "" ]; then
   		xcodebuild "$action" \
-  		-scheme stickynotes \
-  		-workspace stickynotes.xcworkspace \
-  		-destination 'platform=iOS Simulator,name=iPhone 8' | XCPRETTY_JSON_FILE_OUTPUT=build/reports/"${filename}"/"errors_$1.json" xcpretty -r junit --output build/reports/"${filename}"/"${filename}_$1.xml"  -f `xcpretty-json-formatter` -resultBundlePath TestResults # OS=13.3' TODO: add the device's OS picking logic.
+      -scheme stickynotes \
+      -workspace stickynotes.xcworkspace \
+      -destination 'platform=iOS Simulator,name=iPhone 8' \
+      -resultBundlePath "build/reports/results/TestResults_${i}/TestResults_$1" | XCPRETTY_JSON_FILE_OUTPUT=build/reports/"${filename}"/"errors_$1.json" xcpretty --report junit --output build/reports/"${filename}"/"${filename}_$1.xml"  #-f `xcpretty-json-formatter` # OS=13.3' TODO: add the device's OS picking logic.
   	else
   		xcodebuild "$action" \
   		-scheme stickynotes \
   		-workspace stickynotes.xcworkspace \
   		-destination 'platform=iOS Simulator,name=iPhone 8' \
-  		-only-testing "$target" -resultBundlePath "build/reports/results/TestResults_${i}/TestResults_$1" | XCPRETTY_JSON_FILE_OUTPUT=build/reports/"${filename}"/"errors_$1.json" xcpretty --report junit --output build/reports/"${filename}"/"${filename}_$1.xml"  -f `xcpretty-json-formatter` #--report html
+  		-only-testing "$target" -resultBundlePath "build/reports/results/TestResults_${i}/TestResults_$1" | XCPRETTY_JSON_FILE_OUTPUT=build/reports/"${filename}"/"errors_$1.json" xcpretty --report junit --output build/reports/"${filename}"/"${filename}_$1.xml"  #-f `xcpretty-json-formatter` #--report html
 	fi
 }
 
-for ((i=1; i<=count; i++));  #used C style loop as 'for i in {1..$count}' does not work!
+for ((i=1; i<=count; i++));  #used C style loop as 'for i in {1..$count}' does not work, as the variable does not inflate in time!
   do 
     perform_tests $i;  #execute the tests 'count' nuber of times. 
     if [ "$generatehtmlreport" = true ] ; then #egenerate html reports if needed.

@@ -8,20 +8,9 @@
 
 import XCTest
 
-let hostAddress = "localhost" //Update this based on the GCP IP.
+let hostAddress = "34.67.168.22" //Update this based on the GCP IP.
 
 class RESTTests: XCTestCase {
-
-    func testRESTServiceForImageDownloadToMeasureTime () {
-        measure {
-            let expectation = XCTestExpectation(description: "Download Image")
-            self.triggerRequest(with: hostAddress, endPoint: "stickynote") { (data) in
-                XCTAssertNotNil(data, "No image downloaded!")
-                expectation.fulfill()
-            }
-            wait(for: [expectation], timeout: 2.0)
-        }
-    }
 
     func testRESTServiceForHelloMessageToMeasureTime () {
         measure {
@@ -33,18 +22,45 @@ class RESTTests: XCTestCase {
             wait(for: [expectation], timeout: 2.0)
         }
     }
-    
-    func testAll () {
-        print("9.99999")
+
+    func testRESTServiceForHelloMessageToMeasureResponseSize () {
+        let expectation = XCTestExpectation(description: "Download Hello Message")
+        self.triggerRequest(with: hostAddress, endPoint: "sayHello") { (data) in
+            XCTAssertNotNil(data, "No message downloaded!")
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2.0)
     }
+    
+    func testRESTServiceForImageDownloadToMeasureTime () {
+        measure {
+            let expectation = XCTestExpectation(description: "Download Image")
+            self.triggerRequest(with: hostAddress, endPoint: "stickynote") { (data) in
+                XCTAssertNotNil(data, "No image downloaded!")
+                expectation.fulfill()
+            }
+            wait(for: [expectation], timeout: 2.0)
+        }
+    }
+    
+    func testRESTServiceForImageDownloadToMeasureResponseSize () {
+        let expectation = XCTestExpectation(description: "Download Image")
+        self.triggerRequest(with: hostAddress, endPoint: "stickynote") { (data) in
+            XCTAssertNotNil(data, "No image downloaded!")
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2.0)
+    }
+    
 }
 
 extension RESTTests {
+    
     private func triggerRequest(with hostAddress: String, endPoint: String, completion: @escaping (Data?)->()) {
         let urlComponents = NSURLComponents()
         urlComponents.scheme = "http"
         urlComponents.host = hostAddress
-        urlComponents.port = NSNumber(value:10000)
+        urlComponents.port = NSNumber(value:8080)
         urlComponents.path = "/" + endPoint
         let messageQuery = URLQueryItem(name: "message", value: "Testing")
         urlComponents.queryItems = [messageQuery]
