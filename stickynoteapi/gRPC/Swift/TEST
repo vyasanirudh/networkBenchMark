@@ -83,13 +83,18 @@ perform_tests() {
       -scheme stickynotes \
       -workspace stickynotes.xcworkspace \
       -destination 'platform=iOS Simulator,name=iPhone 8' \
-      -resultBundlePath "build/reports/results/TestResults_${i}/TestResults_$1" | XCPRETTY_JSON_FILE_OUTPUT=build/reports/"${filename}"/"errors_$1.json" xcpretty --report junit --output build/reports/"${filename}"/"${filename}_$1.xml"  #-f `xcpretty-json-formatter` # OS=13.3' TODO: add the device's OS picking logic.
+      | XCPRETTY_JSON_FILE_OUTPUT=build/reports/"${filename}"/"errors_$1.json" xcpretty --report junit \
+      --output build/reports/"${filename}"/"${filename}_$1.xml" \
+      -f `xcpretty-json-formatter` # -resultBundlePath "build/reports/results/TestResults_${i}/TestResults_$1"  # OS=13.3' TODO: add the device's OS picking logic.
   	else
   		xcodebuild "$action" \
   		-scheme stickynotes \
   		-workspace stickynotes.xcworkspace \
   		-destination 'platform=iOS Simulator,name=iPhone 8' \
-  		-only-testing "$target" -resultBundlePath "build/reports/results/TestResults_${i}/TestResults_$1" | XCPRETTY_JSON_FILE_OUTPUT=build/reports/"${filename}"/"errors_$1.json" xcpretty --report junit --output build/reports/"${filename}"/"${filename}_$1.xml"  #-f `xcpretty-json-formatter` #--report html
+  		-only-testing "$target" GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS OUTPUT_FOLDER_PATH="testFolder"' \
+      | XCPRETTY_JSON_FILE_OUTPUT=build/reports/"${filename}"/"errors_$1.json" xcpretty --report junit \
+      --output build/reports/"${filename}"/"${filename}_$1.xml" \
+      -f `xcpretty-json-formatter` # -resultBundlePath "build/reports/results/TestResults_${i}/TestResults_$1"  #--report html
 	fi
 }
 

@@ -9,7 +9,8 @@
 import XCTest
 import stickynote
 
-let hostAddress = "34.70.205.186" //Update this based on the GCP IP.
+let hostAddress = "35.238.196.60" //Update this based on the GCP IP.
+let timeout = 5.0
 
 class gRPCTests: XCTestCase {
     
@@ -29,18 +30,19 @@ class gRPCTests: XCTestCase {
                 XCTAssertNotNil(response, "No message downloaded!")
                 expectation.fulfill()
             }
-            wait(for: [expectation], timeout: 2.0)
+            wait(for: [expectation], timeout: timeout)
         }
     }
     
-//    func testgRPCServiceForHelloMessageToMeasureResponseSize() {
-//        let expectation = XCTestExpectation(description: "Download Hello message")
-//        self.makeRPCallForHelloMessage { (response,error) in
-//            XCTAssertNotNil(response, "No message downloaded!")
-//            expectation.fulfill()
-//        }
-//        wait(for: [expectation], timeout: 2.0)
-//    }
+    func testgRPCServiceForHelloMessageToMeasureResponseSize() {
+        let expectation = XCTestExpectation(description: "Download Hello message")
+        self.makeRPCallForHelloMessage { (response,error) in
+            XCTAssertNotNil(response, "No message downloaded!")
+            Reporter.recordTestResults(for: #function, with: "\(#function),\(response?.data()?.count ?? 0)\n")
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: timeout)
+    }
     
     func testgRPCServiceForImageDownloadToMeasureTime () {
         measure {
@@ -49,24 +51,19 @@ class gRPCTests: XCTestCase {
                 XCTAssertNotNil(response, "No image downloaded!")
                 expectation.fulfill()
             }
-            wait(for: [expectation], timeout: 2.0)
+            wait(for: [expectation], timeout: timeout)
         }
     }
     
-//    func testgRPCServiceForImageDownloadToMeasureResponseSize() {
-//        let expectation = XCTestExpectation(description: "Download Image")
-//        self.makeRPCallForImageDownlaod { (response, error) in
-//            XCTAssertNotNil(response, "No image downloaded!")
-//            expectation.fulfill()
-//        }
-//        wait(for: [expectation], timeout: 2.0)
-//
-//        addTeardownBlock {
-//
-//        }
-//    }
-    
-    
+    func testgRPCServiceForImageDownloadToMeasureResponseSize() {
+        let expectation = XCTestExpectation(description: "Download Image")
+        self.makeRPCallForImageDownlaod { (response, error) in
+            XCTAssertNotNil(response, "No image downloaded!")
+            Reporter.recordTestResults(for: #function, with: "\(#function),\(response?.data()?.count ?? 0)\n")
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: timeout)
+    }
 }
 
 private extension gRPCTests {
@@ -98,5 +95,4 @@ private extension gRPCTests {
             call.start()
         }
     }
-    
 }

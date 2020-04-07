@@ -11,6 +11,8 @@
 		516F0748B52E4098CE283574 /* Pods_stickynotes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65688938A2F7216102D22916 /* Pods_stickynotes.framework */; };
 		681CCC4A24310AFC0031EE45 /* gRPCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681CCC4924310AFC0031EE45 /* gRPCTests.swift */; };
 		681CCC5824311FC40031EE45 /* RESTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681CCC5724311FC40031EE45 /* RESTTests.swift */; };
+		681CCC84243C63C70031EE45 /* Reporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681CCC83243C63C70031EE45 /* Reporter.swift */; };
+		681CCC85243C63C70031EE45 /* Reporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681CCC83243C63C70031EE45 /* Reporter.swift */; };
 		688CC436242CBF7D005734A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688CC435242CBF7C005734A3 /* AppDelegate.swift */; };
 		D326502F1CB728D30049E61E /* ssl.crt in Resources */ = {isa = PBXBuildFile; fileRef = D326502E1CB728D30049E61E /* ssl.crt */; };
 		D388474B1C7D4DDF00160FE6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D38847491C7D4DDF00160FE6 /* Main.storyboard */; };
@@ -46,6 +48,7 @@
 		681CCC5724311FC40031EE45 /* RESTTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTTests.swift; sourceTree = "<group>"; };
 		681CCC5924311FC40031EE45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		681CCC70243131490031EE45 /* stickynotes copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "stickynotes copy-Info.plist"; path = "/Users/anirudh.vyas/Documents/Repos/NetworkCommunicationComparisonStudy/AnirudhGitNBS/networkBenchMark/stickynoteapi/gRPC/Swift/stickynotes copy-Info.plist"; sourceTree = "<absolute>"; };
+		681CCC83243C63C70031EE45 /* Reporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reporter.swift; sourceTree = "<group>"; };
 		688CC435242CBF7C005734A3 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		956CD59DE5FBCB500CA0EBDC /* Pods-gRPCTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gRPCTests.debug.xcconfig"; path = "Target Support Files/Pods-gRPCTests/Pods-gRPCTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9681B48A4EC55F3D78804310 /* Pods-stickynotes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-stickynotes.release.xcconfig"; path = "Target Support Files/Pods-stickynotes/Pods-stickynotes.release.xcconfig"; sourceTree = "<group>"; };
@@ -150,6 +153,7 @@
 				688CC435242CBF7C005734A3 /* AppDelegate.swift */,
 				681CCC062430CCDC0031EE45 /* stickynotes-Bridging-Header.h */,
 				D3BF6C7C1D1C8E6C00055E02 /* StickyNotesViewController.swift */,
+				681CCC83243C63C70031EE45 /* Reporter.swift */,
 			);
 			path = stickynotes;
 			sourceTree = "<group>";
@@ -391,6 +395,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				681CCC84243C63C70031EE45 /* Reporter.swift in Sources */,
 				681CCC4A24310AFC0031EE45 /* gRPCTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -399,6 +404,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				681CCC85243C63C70031EE45 /* Reporter.swift in Sources */,
 				681CCC5824311FC40031EE45 /* RESTTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -468,11 +474,19 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"GPB_USE_PROTOBUF_FRAMEWORK_IMPORTS=1",
+					"OUTPUT_FOLDER_PATH=$(OUTPUT_FOLDER_PATH)",
+				);
 				INFOPLIST_FILE = gRPCTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "-D OUTPUT_FOLDER_PATH";
 				PRODUCT_BUNDLE_IDENTIFIER = com..gRPCTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -508,6 +522,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "-D OUTPUT_FOLDER_PATH";
 				PRODUCT_BUNDLE_IDENTIFIER = com..gRPCTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -537,11 +552,17 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"OUTPUT_FOLDER_PATH=$(OUTPUT_FOLDER_PATH)",
+				);
 				INFOPLIST_FILE = RESTTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "-D OUTPUT_FOLDER_PATH";
 				PRODUCT_BUNDLE_IDENTIFIER = com..RESTTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -576,6 +597,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "-D OUTPUT_FOLDER_PATH";
 				PRODUCT_BUNDLE_IDENTIFIER = com..RESTTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -679,8 +701,16 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"GPB_USE_PROTOBUF_FRAMEWORK_IMPORTS=1",
+					"OUTPUT_FOLDER_PATH=$(OUTPUT_FOLDER_PATH)",
+				);
 				INFOPLIST_FILE = stickynotes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-D OUTPUT_FOLDER_PATH";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.stickynotes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -700,6 +730,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = stickynotes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-D OUTPUT_FOLDER_PATH";
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.stickynotes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

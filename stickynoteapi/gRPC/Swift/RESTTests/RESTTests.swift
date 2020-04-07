@@ -7,8 +7,10 @@
 //
 
 import XCTest
+import os.log
 
-let hostAddress = "34.67.168.22" //Update this based on the GCP IP.
+let hostAddress = "34.68.5.9" //Update this based on the GCP IP.
+let timeout = 5.0
 
 class RESTTests: XCTestCase {
 
@@ -19,7 +21,7 @@ class RESTTests: XCTestCase {
                 XCTAssertNotNil(data, "No message downloaded!")
                 expectation.fulfill()
             }
-            wait(for: [expectation], timeout: 2.0)
+            wait(for: [expectation], timeout: timeout)
         }
     }
 
@@ -27,9 +29,10 @@ class RESTTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Download Hello Message")
         self.triggerRequest(with: hostAddress, endPoint: "sayHello") { (data) in
             XCTAssertNotNil(data, "No message downloaded!")
+            Reporter.recordTestResults(for: #function, with: "\(#function),\(data?.count ?? 0)\n")
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 2.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testRESTServiceForImageDownloadToMeasureTime () {
@@ -39,7 +42,7 @@ class RESTTests: XCTestCase {
                 XCTAssertNotNil(data, "No image downloaded!")
                 expectation.fulfill()
             }
-            wait(for: [expectation], timeout: 2.0)
+            wait(for: [expectation], timeout: timeout)
         }
     }
     
@@ -47,9 +50,10 @@ class RESTTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Download Image")
         self.triggerRequest(with: hostAddress, endPoint: "stickynote") { (data) in
             XCTAssertNotNil(data, "No image downloaded!")
+            Reporter.recordTestResults(for: #function, with: "\(#function),\(data?.count ?? 0)\n")
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 2.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
 }
