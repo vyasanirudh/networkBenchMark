@@ -1,0 +1,175 @@
+#!/bin/sh
+
+#defining colors
+BLACK="\033[0;30m"        # Black
+RED="\033[0;31m"          # Red
+GREEN="\033[0;32m"        # Green
+YELLOW="\033[0;33m"       # Yellow
+BLUE="\033[0;34m"         # Blue
+MAGENTA="\033[0;35m"       # Purple
+CYAN="\033[0;36m"         # Cyan
+WHITE="\033[0;37m"        # White
+
+NC="\033[0m"       # Text Reset
+
+# Help function
+help_actions()
+{
+   # Display Help
+   echo
+   echo "The task of this script is to run tests on the specified test targets. If no argument is provided then the script tests for all targets and for one run cycle!"
+   echo
+   echo
+   echo "Syntax: sh run_tests --grpc 5"
+   echo "This will build the gRPCTests target and run the associated tests with run cycle count of 5"
+   echo
+   echo "options:"
+   echo "--grpc       run the tests associated with gRPCTests target."
+   echo "--rest       run the tests associated with RESTTests target."
+   echo "--socket     run the tests associated with SocketTests target."
+   echo
+   echo "--without-building       run the tests without building the target."
+   echo
+   echo "--generate-html-report   generates a interactive HTML report of the tests."
+   echo
+   echo "${YELLOW} *** The number run cycles need to be provided as the last argument. *** ${NC}"
+   echo
+}
+
+action="test"; target=""; filename="all"; generatehtmlreport=false
+
+for last; do true; done
+count=${last:-1}
+
+regex='^[0-9]+$' #check if last argument is a number, if not set it to 1.
+if ! [[ $count =~ $regex ]] ; then
+   count=1
+fi
+
+while (( "$#" )); do
+  case "$1" in
+    --help)
+    help_actions
+    exit 0
+    ;;
+    --rest)
+    target="RESTTests/RESTTests"
+    filename="rest"
+    ;;
+    --grpc)
+    target="gRPCTests/gRPCTests"
+    filename="grpc"
+    ;;
+    --socket)
+    target="SocketTests/SocketTests"
+    filename="socket"
+    ;;
+    --without-building)
+    action="test-without-building"
+    ;;
+    --generate-html-report)
+    generatehtmlreport=true
+    ;;
+    *)
+  esac
+  shift
+done
+
+
+remove_previous_records() {
+  echo "${RED} REMOVING PREVIOUS TEST RECORDS! ${NC}" # make this conditional.
+  rm -rf build/reports
+}
+
+setup_environment() {
+  echo "${MAGENTA} Checking if 'xcpretty' gem is installed or not, found the gem? ${NC}"
+  if ! gem list -i "^xcpretty$"; then 
+    echo "${RED} 'xcpretty' not found, installing now! ${NC}"
+    gem install xcpretty
+  fi
+
+  echo "${MAGENTA} Checking if 'xcpretty-json-formatter' gem is installed or not, found the gem? ${NC}"
+  if ! gem list -i "^xcpretty-json-formatter$"; then 
+    echo "${RED} 'xcpretty-json-formatter' not found, installing now! ${NC}"
+    gem install xcpretty-json-formatter
+  fi
+
+  echo "${MAGENTA} Checking if brew package for 'xchtmlreport' is installed or not, found the package? ${NC}"
+  brew list xchtmlreport || brew install xchtmlreport
+
+  echo "${MAGENTA} Checking if brew package for 'jq' is installed or not, found the package? ${NC}"
+  brew list jq || brew install jq
+
+  echo "${MAGENTA} Checking if npm package for 'xml2js' is installed or not, found the package? ${NC}"
+  if [ ! -d "node/node_modules/$xml2js" ]; then
+    echo "${MAGENTA} Installing npm package for 'xml2js'"
+    npm install xml2js
+  else 
+    echo "true"
+  fi
+
+  echo "${MAGENTA} Checking if npm package for 'glob' is installed or not, found the package? ${NC}"
+  if [ ! -d "node/node_modules/$glob" ]; then
+    echo "${MAGENTA} Installing npm package for 'glob'"
+    npm install glob
+  else 
+    echo "true"
+  fi
+}
+
+# Reset
+remove_previous_records
+#set up environment
+setup_environment
+
+echo "${CYAN} **** Initiating: $action with target $target **** ${NC}"
+
+perform_tests() {
+	if [ "$target" = "" ]; then
+  		xcodebuild "$action" \
+      -scheme stickynotes \
+      -workspace stickynotes.xcworkspace \
+      -destination 'platform=iOS Simulator,name=iPhone 8' \
+      | XCPRETTY_JSON_FILE_OUTPUT=build/reports/"${filename}"/"errors_$1.json" xcpretty --report junit \
+      --output build/reports/"${filename}"/"${filename}_$1.xml" \
+      -f `xcpretty-json-formatter` # -resultBundlePath "build/reports/results/TestResults_${i}/TestResults_$1"  # OS=13.3' TODO: add the device's OS picking logic.
+  	else
+  		xcodebuild "$action" \
+  		-scheme stickynotes \
+  		-workspace stickynotes.xcworkspace \
+  		-destination 'platform=iOS Simulator,name=iPhone 8' \
+  		-only-testing "$target" \
+      | XCPRETTY_JSON_FILE_OUTPUT=build/reports/"${filename}"/"errors_$1.json" xcpretty --report junit \
+      --output build/reports/"${filename}"/"${filename}_$1.xml" \
+      -f `xcpretty-json-formatter` # -resultBundlePath "build/reports/results/TestResults_${i}/TestResults_$1"  #--report html
+	fi
+}
+
+for ((i=1; i<=count; i++));  #used C style loop as 'for i in {1..$count}' does not work, as the variable does not inflate in time!
+  do 
+    perform_tests $i;  #execute the tests 'count' nuber of times. 
+    if [ "$generatehtmlreport" = true ] ; then #egenerate html reports if needed.
+      xchtmlreport -r "build/reports/results/TestResults_${i}/TestResults_${i}"
+    fi
+done
+
+#collate all data. The process of collating works in a simple way, convert XML to JSON and collate into one, and then to CSV. :)
+
+echo "${CYAN} **** GENERATING COMBINED FINAL TEST REPORT **** ${NC}"
+
+generate_json_report() {
+  node ./node/generateJsonReport.js
+}
+
+generate_csv() {
+  jq -r '.testsuites | .testsuite[] | .testcase[] | ."$" | [.classname, .name, .time] | @csv' "./build/reports/combinedReport.json" > "./build/reports/combinedReport.csv"
+  # Add the heading to column name
+  echo 'Target,Test,Time' | cat - "./build/reports/combinedReport.csv" > temp && mv temp "./build/reports/combinedReport.csv"
+}
+# This step ensures that a csv is generated after the json is ready.
+
+generate_json_report
+generate_csv
+
+echo "${CYAN} **** FINISHED ****"
+
